@@ -7,7 +7,12 @@ class Genre {
     }
     
     public function getAllGenres() {
-        $query = "SELECT id, name FROM genre ORDER BY name ASC";
+        $query = "SELECT 
+                    id, 
+                    name 
+                  FROM 
+                    genre 
+                  ORDER BY name ASC";
         $stmt = $this->db->query($query);
         return $stmt->fetchAll();
     }

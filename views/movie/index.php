@@ -1,15 +1,20 @@
-<?php require_once ROOT . '/views/layouts/header.php'; ?>
-
-<h1 class="site-name">My_Cinema</h1>
+<?php require ROOT . '/views/layouts/header.php'; ?>
 
 <form method="GET" class="search-form">
+    <select name="search_type" class="search-type">
+        <option value="all" <?= $searchType === 'all' ? 'selected' : '' ?>>All</option>
+        <option value="title" <?= $searchType === 'title' ? 'selected' : '' ?>>Title</option>
+        <option value="director" <?= $searchType === 'director' ? 'selected' : '' ?>>Director</option>
+    </select>
+
     <input
         type="text"
         name="search"
         class="search-input"
-        placeholder="Search for a film or director or genre..."
+        placeholder="Search for a film or director..."
         value="<?= htmlspecialchars($search) ?>">
-    <select class="genre-select" name="sort">
+
+    <select name="sort" class="genre-select">
         <option value="">All genre</option>
         <?php foreach ($genres as $genre): ?>
             <option value="<?= htmlspecialchars($genre['id']) ?>"
@@ -18,6 +23,7 @@
             </option>
         <?php endforeach; ?>
     </select>
+
     <select name="limit" onchange="this.form.submit()">
         <?php foreach ($allowedLimits as $limitOption): ?>
             <option value="<?= $limitOption ?>" <?= $limit == $limitOption ? 'selected' : '' ?>>
@@ -25,6 +31,7 @@
             </option>
         <?php endforeach; ?>
     </select>
+
     <button type="submit" class="search-button">Search</button>
 </form>
 

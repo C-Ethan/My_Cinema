@@ -6,8 +6,7 @@ class Movie {
         $this->db = Database::getInstance();
     }
     
-    public function searchMovies($search = '', $selectedGenre = null, $limit = 20, $page = 1) {
-        // Calculer l'offset pour la pagination
+    public function searchMovies($search = '', $selectedGenre = null, $searchType = 'all', $limit = 20, $page = 1) {
         $offset = ($page - 1) * $limit;
         
         if (!empty($search)) {
@@ -21,9 +20,16 @@ class Movie {
                         movie_genre ON movie.id = movie_genre.id_movie
                       JOIN 
                         genre ON movie_genre.id_genre = genre.id
-                      WHERE 
-                        (movie.title LIKE :search 
-                        OR genre.name LIKE :search)";
+                      WHERE ";
+
+            // Modifier la clause WHERE selon le type de recherche
+            if ($searchType === 'title') {
+                $query .= "movie.title LIKE :search";
+            } elseif ($searchType === 'director') {
+                $query .= "movie.director LIKE :search";
+            } else {
+                $query .= "(movie.title LIKE :search OR movie.director LIKE :search)";
+            }
 
             if ($selectedGenre) {
                 $query .= " AND genre.id = :genre";
@@ -70,17 +76,24 @@ class Movie {
         return $stmt->fetchAll();
     }
 
-    public function getTotalMovies($search = '', $selectedGenre = null) {
+    public function getTotalMovies($search = '', $selectedGenre = null, $searchType = 'all') {
         if (!empty($search)) {
-            $query = "SELECT COUNT(*) as total FROM 
+            $query = "SELECT COUNT(movie.id) as total FROM 
                         movie
                       JOIN
                         movie_genre ON movie.id = movie_genre.id_movie
                       JOIN 
                         genre ON movie_genre.id_genre = genre.id
-                      WHERE 
-                        (movie.title LIKE :search 
-                        OR genre.name LIKE :search)";
+                      WHERE ";
+
+            // Modifier la clause WHERE selon le type de recherche
+            if ($searchType === 'title') {
+                $query .= "movie.title LIKE :search";
+            } elseif ($searchType === 'director') {
+                $query .= "movie.director LIKE :search";
+            } else {
+                $query .= "(movie.title LIKE :search OR movie.director LIKE :search)";
+            }
 
             if ($selectedGenre) {
                 $query .= " AND genre.id = :genre";
@@ -94,7 +107,7 @@ class Movie {
                 $stmt->bindParam(':genre', $selectedGenre, PDO::PARAM_INT);
             }
         } else {
-            $query = "SELECT COUNT(*) as total FROM 
+            $query = "SELECT COUNT(movie.id) as total FROM 
                         movie
                       JOIN
                         movie_genre ON movie.id = movie_genre.id_movie
