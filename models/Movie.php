@@ -6,125 +6,110 @@ class Movie {
         $this->db = Database::getInstance();
     }
     
-    public function searchMovies($search = '', $selectedGenre = null, $searchType = 'all', $limit = 20, $page = 1) {
+    public function searchMovies($search = '', $selectedGenre = null, $selectedDistrib = null, $searchType = 'all', $limit = 20, $page = 1) {
         $offset = ($page - 1) * $limit;
         
+        $query = "SELECT
+                    movie.*,
+                    movie_genre.id_genre,
+                    genre.name AS 'genre',
+                    distributor.name AS 'distributor_name'
+                  FROM 
+                    movie
+                  JOIN
+                    movie_genre ON movie.id = movie_genre.id_movie
+                  JOIN 
+                    genre ON movie_genre.id_genre = genre.id
+                  JOIN
+                    distributor ON movie.id_distributor = distributor.id";
+
+        $conditions = [];
+        $params = [];
+
         if (!empty($search)) {
-            $query = "SELECT
-                        movie.*,
-                        movie_genre.id_genre,
-                        genre.name AS 'genre'
-                      FROM 
-                        movie
-                      JOIN
-                        movie_genre ON movie.id = movie_genre.id_movie
-                      JOIN 
-                        genre ON movie_genre.id_genre = genre.id
-                      WHERE ";
-
-            // Modifier la clause WHERE selon le type de recherche
             if ($searchType === 'title') {
-                $query .= "movie.title LIKE :search";
+                $conditions[] = "movie.title LIKE :search";
             } elseif ($searchType === 'director') {
-                $query .= "movie.director LIKE :search";
+                $conditions[] = "movie.director LIKE :search";
             } else {
-                $query .= "(movie.title LIKE :search OR movie.director LIKE :search)";
+                $conditions[] = "(movie.title LIKE :search OR movie.director LIKE :search)";
             }
+            $params[':search'] = "%$search%";
+        }
 
-            if ($selectedGenre) {
-                $query .= " AND genre.id = :genre";
-            }
+        if ($selectedGenre) {
+            $conditions[] = "genre.id = :genre";
+            $params[':genre'] = $selectedGenre;
+        }
 
-            $query .= " LIMIT :limit OFFSET :offset";
+        if ($selectedDistrib) {
+            $conditions[] = "distributor.id = :distributor";
+            $params[':distributor'] = $selectedDistrib;
+        }
 
-            $stmt = $this->db->prepare($query);
-            $searchTerm = "%$search%";
-            $stmt->bindParam(':search', $searchTerm);
+        if (!empty($conditions)) {
+            $query .= " WHERE " . implode(" AND ", $conditions);
+        }
 
-            if ($selectedGenre) {
-                $stmt->bindParam(':genre', $selectedGenre, PDO::PARAM_INT);
-            }
-        } else {
-            $query = "SELECT
-                        movie.title,
-                        movie.director,
-                        movie_genre.id_genre,
-                        genre.name AS 'genre'
-                      FROM 
-                        movie
-                      JOIN
-                        movie_genre ON movie.id = movie_genre.id_movie
-                      JOIN 
-                        genre ON movie_genre.id_genre = genre.id";
+        $query .= " ORDER BY movie.id ASC LIMIT :limit OFFSET :offset";
+        
+        $stmt = $this->db->prepare($query);
 
-            if ($selectedGenre) {
-                $query .= " WHERE genre.id = :genre";
-            }
-
-            $query .= " LIMIT :limit OFFSET :offset";
-            $stmt = $this->db->prepare($query);
-
-            if ($selectedGenre) {
-                $stmt->bindParam(':genre', $selectedGenre, PDO::PARAM_INT);
-            }
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
         }
         
-        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
         
         return $stmt->fetchAll();
     }
 
-    public function getTotalMovies($search = '', $selectedGenre = null, $searchType = 'all') {
+    public function getTotalMovies($search = '', $selectedGenre = null, $selectedDistrib = null, $searchType = 'all') {
+        $query = "SELECT COUNT(DISTINCT movie.id) as total FROM 
+                    movie
+                  JOIN
+                    movie_genre ON movie.id = movie_genre.id_movie
+                  JOIN 
+                    genre ON movie_genre.id_genre = genre.id
+                  JOIN
+                    distributor ON movie.id_distributor = distributor.id";
+
+        $conditions = [];
+        $params = [];
+
         if (!empty($search)) {
-            $query = "SELECT COUNT(movie.id) as total FROM 
-                        movie
-                      JOIN
-                        movie_genre ON movie.id = movie_genre.id_movie
-                      JOIN 
-                        genre ON movie_genre.id_genre = genre.id
-                      WHERE ";
-
-            // Modifier la clause WHERE selon le type de recherche
             if ($searchType === 'title') {
-                $query .= "movie.title LIKE :search";
+                $conditions[] = "movie.title LIKE :search";
             } elseif ($searchType === 'director') {
-                $query .= "movie.director LIKE :search";
+                $conditions[] = "movie.director LIKE :search";
             } else {
-                $query .= "(movie.title LIKE :search OR movie.director LIKE :search)";
+                $conditions[] = "(movie.title LIKE :search OR movie.director LIKE :search)";
             }
-
-            if ($selectedGenre) {
-                $query .= " AND genre.id = :genre";
-            }
-
-            $stmt = $this->db->prepare($query);
-            $searchTerm = "%$search%";
-            $stmt->bindParam(':search', $searchTerm);
-
-            if ($selectedGenre) {
-                $stmt->bindParam(':genre', $selectedGenre, PDO::PARAM_INT);
-            }
-        } else {
-            $query = "SELECT COUNT(movie.id) as total FROM 
-                        movie
-                      JOIN
-                        movie_genre ON movie.id = movie_genre.id_movie
-                      JOIN 
-                        genre ON movie_genre.id_genre = genre.id";
-
-            if ($selectedGenre) {
-                $query .= " WHERE genre.id = :genre";
-            }
-
-            $stmt = $this->db->prepare($query);
-
-            if ($selectedGenre) {
-                $stmt->bindParam(':genre', $selectedGenre, PDO::PARAM_INT);
-            }
+            $params[':search'] = "%$search%";
         }
-        
+
+        if ($selectedGenre) {
+            $conditions[] = "genre.id = :genre";
+            $params[':genre'] = $selectedGenre;
+        }
+
+        if ($selectedDistrib) {
+            $conditions[] = "distributor.id = :distributor";
+            $params[':distributor'] = $selectedDistrib;
+        }
+
+        if (!empty($conditions)) {
+            $query .= " WHERE " . implode(" AND ", $conditions);
+        }
+
+        $stmt = $this->db->prepare($query);
+
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+
         $stmt->execute();
         return $stmt->fetch()['total'];
     }
