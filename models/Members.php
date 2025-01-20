@@ -1,75 +1,51 @@
 <?php
-class Member {
+class User {
     private $db;
     
     public function __construct() {
-        $this->db = Database::getInstance();
+        $this->db = Database::getInstance(); // Suppose que vous avez une classe Database similaire
     }
-    
-    public function searchMembers($search = '', $searchType = 'all', $limit = 20, $page = 1) {
+
+    // Récupérer les utilisateurs avec pagination
+    public function getUsers($limit = 20, $page = 1, $search = '') {
         $offset = ($page - 1) * $limit;
+
+        $query = "SELECT id, name, email FROM user";
         
-        $query = "SELECT * 
-                  FROM user";
-
-        $conditions = [];
-        $params = [];
-
+        // Ajouter une clause WHERE si une recherche est fournie
         if (!empty($search)) {
-            if ($searchType === 'lastname') {
-                $conditions[] = "lastname LIKE :search";
-            } elseif ($searchType === 'email') {
-                $conditions[] = "email LIKE :search";
-            } else {
-                $conditions[] = "(lastname LIKE :search OR email LIKE :search)";
-            }
-            $params[':search'] = "%$search%";
+            $query .= " WHERE name LIKE :search OR email LIKE :search";
         }
-
-        if (!empty($conditions)) {
-            $query .= " WHERE " . implode(" AND ", $conditions);
-        }
-
-        $query .= " ORDER BY id ASC LIMIT :limit OFFSET :offset";
         
+        $query .= " LIMIT :limit OFFSET :offset";
+
         $stmt = $this->db->prepare($query);
 
-        foreach ($params as $key => $value) {
-            $stmt->bindValue($key, $value);
+        if (!empty($search)) {
+            $searchTerm = "%$search%";
+            $stmt->bindParam(':search', $searchTerm, PDO::PARAM_STR);
         }
-        
-        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+
         $stmt->execute();
-        
         return $stmt->fetchAll();
     }
 
-    public function getTotalMembers($search = '', $searchType = 'all') {
-        $query = "SELECT COUNT(*) as total FROM user";
-
-        $conditions = [];
-        $params = [];
+    // Compter le nombre total d'utilisateurs
+    public function getTotalUsers($search = '') {
+        $query = "SELECT COUNT(id) as total FROM user";
 
         if (!empty($search)) {
-            if ($searchType === 'lastname') {
-                $conditions[] = "lastname LIKE :search";
-            } elseif ($searchType === 'email') {
-                $conditions[] = "email LIKE :search";
-            } else {
-                $conditions[] = "(lastname LIKE :search OR email LIKE :search)";
-            }
-            $params[':search'] = "%$search%";
-        }
-
-        if (!empty($conditions)) {
-            $query .= " WHERE " . implode(" AND ", $conditions);
+            $query .= " WHERE name LIKE :search OR email LIKE :search";
         }
 
         $stmt = $this->db->prepare($query);
 
-        foreach ($params as $key => $value) {
-            $stmt->bindValue($key, $value);
+        if (!empty($search)) {
+            $searchTerm = "%$search%";
+            $stmt->bindParam(':search', $searchTerm, PDO::PARAM_STR);
         }
 
         $stmt->execute();
