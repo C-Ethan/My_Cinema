@@ -6,7 +6,7 @@ class Movie {
         $this->db = Database::getInstance();
     }
     
-    public function searchMovies($search = '', $selectedGenre = null, $selectedDistrib = null, $searchType = 'all', $limit = 20, $page = 1) {
+    public function searchMovies($movieSearch = '', $directorSearch, $selectedGenre = null, $selectedDistrib = null, $limit = 20, $page = 1) {
         $offset = ($page - 1) * $limit;
         
         $query = "SELECT
@@ -26,15 +26,14 @@ class Movie {
         $conditions = [];
         $params = [];
 
-        if (!empty($search)) {
-            if ($searchType === 'title') {
-                $conditions[] = "movie.title LIKE :search";
-            } elseif ($searchType === 'director') {
-                $conditions[] = "movie.director LIKE :search";
-            } else {
-                $conditions[] = "(movie.title LIKE :search OR movie.director LIKE :search)";
-            }
-            $params[':search'] = "%$search%";
+        if (!empty($movieSearch)) {
+            $conditions[] = "movie.title LIKE :movieSearch";
+            $params[':movieSearch'] = "%$movieSearch%";
+        }
+    
+        if (!empty($directorSearch)) {
+            $conditions[] = "director LIKE :directorSearch";
+            $params[':directorSearch'] = "%$directorSearch%";
         }
 
         if ($selectedGenre) {
@@ -66,7 +65,7 @@ class Movie {
         return $stmt->fetchAll();
     }
 
-    public function getTotalMovies($search = '', $selectedGenre = null, $selectedDistrib = null, $searchType = 'all') {
+    public function getTotalMovies($movieSearch = '', $directorSearch, $selectedGenre = null, $selectedDistrib = null) {
         $query = "SELECT COUNT(DISTINCT movie.id) as total FROM 
                     movie
                   JOIN
@@ -79,15 +78,14 @@ class Movie {
         $conditions = [];
         $params = [];
 
-        if (!empty($search)) {
-            if ($searchType === 'title') {
-                $conditions[] = "movie.title LIKE :search";
-            } elseif ($searchType === 'director') {
-                $conditions[] = "movie.director LIKE :search";
-            } else {
-                $conditions[] = "(movie.title LIKE :search OR movie.director LIKE :search)";
-            }
-            $params[':search'] = "%$search%";
+        if (!empty($movieSearch)) {
+            $conditions[] = "movie.title LIKE :movieSearch";
+            $params[':movieSearch'] = "%$movieSearch%";
+        }
+    
+        if (!empty($directorSearch)) {
+            $conditions[] = "director LIKE :directorSearch";
+            $params[':directorSearch'] = "%$directorSearch%";
         }
 
         if ($selectedGenre) {

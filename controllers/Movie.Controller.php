@@ -15,16 +15,16 @@ class MovieController
 
     public function index()
     {
-        $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $movieSearch = isset($_GET['movieSearch']) ? trim($_GET['movieSearch']) : '';
+        $directorSearch = isset($_GET['directorSearch']) ? trim($_GET['directorSearch']) : '';
         $selectedGenre = isset($_GET['genre']) ? intval($_GET['genre']) : null;
         $selectedDistrib = isset($_GET['distributor']) ? intval($_GET['distributor']) : null;
-        $searchType = isset($_GET['search_type']) ? $_GET['search_type'] : 'all';
         $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
         $limit = isset($_GET['limit']) && in_array(intval($_GET['limit']), $this->allowedLimits)
             ? intval($_GET['limit'])
             : 10;
-        $movies = $this->movieModel->searchMovies($search, $selectedGenre, $selectedDistrib, $searchType, $limit, $page);
-        $totalMovies = $this->movieModel->getTotalMovies($search, $selectedGenre, $selectedDistrib, $searchType);
+        $movies = $this->movieModel->searchMovies($movieSearch, $directorSearch, $selectedGenre, $selectedDistrib, $limit, $page);
+        $totalMovies = $this->movieModel->getTotalMovies($movieSearch, $directorSearch, $selectedGenre, $selectedDistrib);
         $totalPages = ceil($totalMovies / $limit);
         $genres = $this->genreModel->getAllGenres();
         $distributors = $this->distribModel->getAllDistributors();
@@ -33,8 +33,8 @@ class MovieController
             'movies' => $movies,
             'genres' => $genres,
             'distributors' => $distributors,
-            'search' => $search,
-            'searchType' => $searchType,
+            'movieSearch' => $movieSearch,
+            'directorSearch' => $directorSearch,
             'currentPage' => $page,
             'totalPages' => $totalPages,
             'limit' => $limit,

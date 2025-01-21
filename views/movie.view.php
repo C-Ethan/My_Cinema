@@ -1,11 +1,5 @@
 <form method="GET" class="search-form">
     <div class="select-container">
-        <select name="search_type" class="search-type">
-            <option value="all" <?= $searchType === 'all' ? 'selected' : '' ?>>All</option>
-            <option value="title" <?= $searchType === 'title' ? 'selected' : '' ?>>Title</option>
-            <option value="director" <?= $searchType === 'director' ? 'selected' : '' ?>>Director</option>
-        </select>
-
         <select name="genre" class="genre-select">
             <option value="">All genres</option>
             <?php foreach ($genres as $genre): ?>
@@ -29,12 +23,19 @@
     <div class="search-bar">
         <input
             type="text"
-            name="search"
+            name="movieSearch"
             class="search-input"
-            placeholder="Search for a film or director..."
-            value="<?= htmlspecialchars($search) ?>">
+            placeholder="Search by movie..."
+            value="<?= htmlspecialchars($movieSearch ?? '') ?>">
+            
+        <input
+            type="text"
+            name="directorSearch"
+            class="search-input"
+            placeholder="Search by director..."
+            value="<?= htmlspecialchars($directorSearch ?? '') ?>">
 
-        <button type="submit" class="search-button">Rechercher</button>
+        <button type="submit" class="search-button">Search</button>
     </div>
 </form>
 
