@@ -253,19 +253,19 @@ tr:hover {
 }
 
 .button.subscription {
-    background-color: #28a745;
+    background-color: #007BFF;
 }
 
 .button.subscription:hover {
-    background-color: #218838;
+    background-color: #0056b3;
 }
 
 .button.history {
-    background-color: #dc3545;
+    background-color: #6c757d;
 }
 
 .button.history:hover {
-    background-color: #c82333;
+    background-color: #5a6268;
 }
 
 /* Pagination */

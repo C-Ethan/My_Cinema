@@ -4,8 +4,8 @@ define('BASE_URL', '/my_cinema/W-PHP-501-LIL-1-1-mycinema-ethan.carpentier');
 
 // Inclure les fichiers de configuration
 require ROOT . '/config/Database.php';
-require ROOT . '/controllers/Movie.Controller.php';
 require ROOT . '/controllers/Member.Controller.php';
+require ROOT . '/controllers/Movie.Controller.php';
 require ROOT . '/models/Distributor.php';
 require ROOT . '/models/Genre.php';
 require ROOT . '/models/Member.php';
