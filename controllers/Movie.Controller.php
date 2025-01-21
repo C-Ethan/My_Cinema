@@ -1,19 +1,20 @@
 <?php
-class MovieController {
+class MovieController
+{
     private $movieModel;
     private $genreModel;
     private $distribModel;
     private $allowedLimits = [10, 25, 50, 100];
 
-    public function __construct() {
-        // Initialiser les modèles
+    public function __construct()
+    {
         $this->movieModel = new Movie();
         $this->genreModel = new Genre();
         $this->distribModel = new Distributor();
     }
 
-    public function index() {
-        // Récupérer les paramètres de recherche
+    public function index()
+    {
         $search = isset($_GET['search']) ? trim($_GET['search']) : '';
         $selectedGenre = isset($_GET['genre']) ? intval($_GET['genre']) : null;
         $selectedDistrib = isset($_GET['distributor']) ? intval($_GET['distributor']) : null;
@@ -22,16 +23,13 @@ class MovieController {
         $limit = isset($_GET['limit']) && in_array(intval($_GET['limit']), $this->allowedLimits)
             ? intval($_GET['limit'])
             : 10;
-
-        // Récupérer les films et les données associées
         $movies = $this->movieModel->searchMovies($search, $selectedGenre, $selectedDistrib, $searchType, $limit, $page);
         $totalMovies = $this->movieModel->getTotalMovies($search, $selectedGenre, $selectedDistrib, $searchType);
         $totalPages = ceil($totalMovies / $limit);
         $genres = $this->genreModel->getAllGenres();
         $distributors = $this->distribModel->getAllDistributors();
 
-        // Préparer les données pour la vue
-        $data = [
+        extract([
             'movies' => $movies,
             'genres' => $genres,
             'distributors' => $distributors,
@@ -41,10 +39,8 @@ class MovieController {
             'totalPages' => $totalPages,
             'limit' => $limit,
             'allowedLimits' => $this->allowedLimits
-        ];
+        ]);
 
-        // Inclure la vue des films
-        require_once ROOT . '/views/movie.view.php';
+        require ROOT . '/views/movie.view.php';
     }
 }
-?>

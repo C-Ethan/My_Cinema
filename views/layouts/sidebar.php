@@ -10,17 +10,17 @@ $currentPage = basename($_SERVER['PHP_SELF']); // Retourne le nom du fichier act
     <div class="sidebar-menu">
         <!-- Lien vers la page d'accueil -->
         <a href="/my_cinema/W-PHP-501-LIL-1-1-mycinema-ethan.carpentier/" class="sidebar-item <?= ($currentPage === 'index.php' || $currentPage === '') ? 'active' : '' ?>">
-            <span class="sidebar-text">Accueil</span>
+            <span class="sidebar-text">Home</span>
         </a>
 
         <!-- Lien vers la page des films -->
         <a href="/my_cinema/W-PHP-501-LIL-1-1-mycinema-ethan.carpentier/movie.php" class="sidebar-item <?= ($currentPage === 'movie.php') ? 'active' : '' ?>">
-            <span class="sidebar-text">Films</span>
+            <span class="sidebar-text">Movies</span>
         </a>
 
         <!-- Lien vers la page des membres -->
         <a href="/my_cinema/W-PHP-501-LIL-1-1-mycinema-ethan.carpentier/member.php" class="sidebar-item <?= ($currentPage === 'member.php') ? 'active' : '' ?>">
-            <span class="sidebar-text">Membres</span>
+            <span class="sidebar-text">Members</span>
         </a>
     </div>
 </nav>

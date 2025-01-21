@@ -1,11 +1,4 @@
 <form method="GET" class="search-form">
-    <div class="select-container">
-        <select name="search_type" class="search-type">
-            <option value="all" <?= $searchType === 'all' ? 'selected' : '' ?>>All</option>
-            <option value="lastname" <?= $searchType === 'lastname' ? 'selected' : '' ?>>Name</option>
-            <option value="email" <?= $searchType === 'email' ? 'selected' : '' ?>>Email</option>
-        </select>
-    </div>
     <div class="search-bar">
         <input
             type="text"
@@ -26,7 +19,7 @@
                 <th>Last Name</th>
                 <th>First Name</th>
                 <th>Email</th>
-                <th>Actions</th> <!-- Nouvelle colonne pour les boutons -->
+                <th>Actions</th>
             </tr>
         </thead>
 
@@ -38,8 +31,8 @@
                     <td><?= htmlspecialchars($member['firstname']) ?></td>
                     <td><?= htmlspecialchars($member['email']) ?></td>
                     <td>
-                        <a href="#" class="button add">Ajouter</a>
-                        <a href="#" class="button delete">Supprimer</a>
+                        <a href="#" class="button add">Add</a>
+                        <a href="#" class="button delete">Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -48,7 +41,7 @@
 
     <!-- Pagination -->
     <div class="pagination-container">
-        <?php require_once ROOT . '/views/components/pagination.php'; ?>
+        <?php require ROOT . '/views/components/pagination.php'; ?>
         <form method="get">
             <?php foreach ($_GET as $key => $value): ?>
                 <?php if ($key !== 'limit'): ?>
