@@ -27,7 +27,7 @@
             class="search-input"
             placeholder="Search by movie..."
             value="<?= htmlspecialchars($movieSearch ?? '') ?>">
-            
+
         <input
             type="text"
             name="directorSearch"
@@ -67,8 +67,8 @@
                         <?php endif; ?>
                     </td>
                     <td>
-                        <a href="#" class="button add">Add</a>
-                        <a href="#" class="button delete">Delete</a>
+                        <a href="#" class="button add">Add sessions</a>
+                        <a href="#" class="button delete">Delete sessions</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

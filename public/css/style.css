@@ -252,6 +252,22 @@ tr:hover {
     background-color: #c82333;
 }
 
+.button.subscription {
+    background-color: #28a745;
+}
+
+.button.subscription:hover {
+    background-color: #218838;
+}
+
+.button.history {
+    background-color: #dc3545;
+}
+
+.button.history:hover {
+    background-color: #c82333;
+}
+
 /* Pagination */
 .pagination-container {
     display: flex;

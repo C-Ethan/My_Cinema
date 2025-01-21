@@ -39,9 +39,10 @@
                     <td><?= htmlspecialchars($member['lastname']) ?></td>
                     <td><?= htmlspecialchars($member['firstname']) ?></td>
                     <td><?= htmlspecialchars($member['email']) ?></td>
+                    <td><?= htmlspecialchars($member['subscription']) ?></td>
                     <td>
-                        <a href="#" class="button add">Add</a>
-                        <a href="#" class="button delete">Delete</a>
+                        <a href="#" class="button subscription">Subscription</a>
+                        <a href="#" class="button history">History</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
