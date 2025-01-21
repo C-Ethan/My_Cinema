@@ -8,21 +8,21 @@ class MemberController {
     }
 
     public function index() {
-        $search = isset($_GET['search']) ? trim($_GET['search']) : '';
-        $searchType = isset($_GET['search_type']) ? $_GET['search_type'] : 'all';
+        $lastnameSearch = isset($_GET['lastnameSearch']) ? trim($_GET['lastnameSearch']) : '';
+        $firstnameSearch = isset($_GET['firstnameSearch']) ? trim($_GET['firstnameSearch']) : '';
         $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
         $limit = isset($_GET['limit']) && in_array(intval($_GET['limit']), $this->allowedLimits)
             ? intval($_GET['limit'])
             : 10;
 
-        $members = $this->memberModel->searchMembers($search, $searchType, $limit, $page);
-        $totalMembers = $this->memberModel->getTotalMembers($search, $searchType);
+        $members = $this->memberModel->searchMembers($lastnameSearch, $firstnameSearch, $limit, $page);
+        $totalMembers = $this->memberModel->getTotalMembers($lastnameSearch, $firstnameSearch);
         $totalPages = ceil($totalMembers / $limit);
 
         extract([
             'members' => $members,
-            'search' => $search,
-            'searchType' => $searchType,
+            'lastnameSearch' => $lastnameSearch,
+            'firstnameSearch' => $firstnameSearch,
             'currentPage' => $page,
             'totalPages' => $totalPages,
             'limit' => $limit,

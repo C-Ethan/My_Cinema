@@ -6,34 +6,36 @@ class Member {
         $this->db = Database::getInstance();
     }
     
-    public function searchMembers($search = '', $searchType = 'all', $limit = 20, $page = 1) {
+    public function searchMembers($lastnameSearch = '', $firstnameSearch = '', $limit = 20, $page = 1) {
         $offset = ($page - 1) * $limit;
         
         $query = "SELECT * 
                   FROM user";
-
+    
         $conditions = [];
         $params = [];
-
-        if (!empty($search)) {
-            if ($searchType === 'lastname') {
-                $conditions[] = "lastname LIKE :search";
-            } elseif ($searchType === 'email') {
-                $conditions[] = "email LIKE :search";
-            } else {
-                $conditions[] = "(lastname LIKE :search OR email LIKE :search)";
-            }
-            $params[':search'] = "%$search%";
+    
+        // Filtre par lastname
+        if (!empty($lastnameSearch)) {
+            $conditions[] = "lastname LIKE :lastnameSearch";
+            $params[':lastnameSearch'] = "%$lastnameSearch%";
         }
-
+    
+        // Filtre par firstname
+        if (!empty($firstnameSearch)) {
+            $conditions[] = "firstname LIKE :firstnameSearch";
+            $params[':firstnameSearch'] = "%$firstnameSearch%";
+        }
+    
+        // Ajouter les conditions à la requête
         if (!empty($conditions)) {
             $query .= " WHERE " . implode(" AND ", $conditions);
         }
-
+    
         $query .= " ORDER BY id ASC LIMIT :limit OFFSET :offset";
         
         $stmt = $this->db->prepare($query);
-
+    
         foreach ($params as $key => $value) {
             $stmt->bindValue($key, $value);
         }
@@ -44,34 +46,37 @@ class Member {
         
         return $stmt->fetchAll();
     }
-
-    public function getTotalMembers($search = '', $searchType = 'all') {
-        $query = "SELECT COUNT(*) as total FROM user";
-
+    
+    public function getTotalMembers($lastnameSearch = '', $firstnameSearch = '') {
+        $query = "SELECT COUNT(*) as total 
+                  FROM user";
+    
         $conditions = [];
         $params = [];
-
-        if (!empty($search)) {
-            if ($searchType === 'lastname') {
-                $conditions[] = "lastname LIKE :search";
-            } elseif ($searchType === 'email') {
-                $conditions[] = "email LIKE :search";
-            } else {
-                $conditions[] = "(lastname LIKE :search OR email LIKE :search)";
-            }
-            $params[':search'] = "%$search%";
+    
+        // Filtre par lastname
+        if (!empty($lastnameSearch)) {
+            $conditions[] = "lastname LIKE :lastnameSearch";
+            $params[':lastnameSearch'] = "%$lastnameSearch%";
         }
-
+    
+        // Filtre par firstname
+        if (!empty($firstnameSearch)) {
+            $conditions[] = "firstname LIKE :firstnameSearch";
+            $params[':firstnameSearch'] = "%$firstnameSearch%";
+        }
+    
+        // Ajouter les conditions à la requête
         if (!empty($conditions)) {
             $query .= " WHERE " . implode(" AND ", $conditions);
         }
-
+    
         $stmt = $this->db->prepare($query);
-
+    
         foreach ($params as $key => $value) {
             $stmt->bindValue($key, $value);
         }
-
+    
         $stmt->execute();
         return $stmt->fetch()['total'];
     }

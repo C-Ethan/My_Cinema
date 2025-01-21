@@ -1,11 +1,20 @@
 <form method="GET" class="search-form">
     <div class="search-bar">
+        <!-- Barre de recherche pour lastname -->
         <input
             type="text"
-            name="search"
+            name="lastnameSearch"
             class="search-input"
-            placeholder="Search for a member..."
-            value="<?= htmlspecialchars($search) ?>">
+            placeholder="Search by last name..."
+            value="<?= htmlspecialchars($lastnameSearch ?? '') ?>">
+
+        <!-- Barre de recherche pour firstname -->
+        <input
+            type="text"
+            name="firstnameSearch"
+            class="search-input"
+            placeholder="Search by first name..."
+            value="<?= htmlspecialchars($firstnameSearch ?? '') ?>">
 
         <button type="submit" class="search-button">Search</button>
     </div>
