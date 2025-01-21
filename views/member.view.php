@@ -28,6 +28,7 @@
                 <th>Last Name</th>
                 <th>First Name</th>
                 <th>Email</th>
+                <th>Subscription</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -39,7 +40,9 @@
                     <td><?= htmlspecialchars($member['lastname']) ?></td>
                     <td><?= htmlspecialchars($member['firstname']) ?></td>
                     <td><?= htmlspecialchars($member['email']) ?></td>
-                    <td><?= htmlspecialchars($member['subscription']) ?></td>
+                    <td>
+                        <?= !empty($member['subscriptions']) ? htmlspecialchars($member['subscriptions']) : 'No subscriptions' ?>
+                    </td>
                     <td>
                         <a href="#" class="button subscription">Subscription</a>
                         <a href="#" class="button history">History</a>
