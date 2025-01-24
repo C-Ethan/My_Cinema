@@ -1,6 +1,5 @@
 <form method="GET" class="search-form">
     <div class="search-bar">
-        <!-- Barre de recherche pour lastname -->
         <input
             type="text"
             name="lastnameSearch"
@@ -8,7 +7,6 @@
             placeholder="Search by last name..."
             value="<?= htmlspecialchars($lastnameSearch ?? '') ?>">
 
-        <!-- Barre de recherche pour firstname -->
         <input
             type="text"
             name="firstnameSearch"
@@ -22,7 +20,6 @@
 
 <?php if (!empty($members)): ?>
     <table>
-        <!-- En-tête de la table -->
         <thead>
             <tr>
                 <th>Last Name</th>
@@ -33,7 +30,6 @@
             </tr>
         </thead>
 
-        <!-- Corps de la table -->
         <tbody>
             <?php foreach ($members as $member): ?>
                 <tr>
@@ -44,15 +40,14 @@
                         <?= !empty($member['subscriptions']) ? htmlspecialchars($member['subscriptions']) : 'No subscriptions' ?>
                     </td>
                     <td>
-                        <a href="#" class="button subscription">Subscription</a>
-                        <a href="#" class="button history">History</a>
+                        <button class="button subscription" data-user-id="<?= $member['id'] ?>">Subscription</button>
+                        <button class="button history">History</button>
                     </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
 
-    <!-- Pagination -->
     <div class="pagination-container">
         <?php require ROOT . '/views/components/pagination.php'; ?>
         <form method="get">
@@ -74,3 +69,24 @@
 <?php else: ?>
     <p style="text-align: center">No members found in database.</p>
 <?php endif; ?>
+
+<div id="subscriptionModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Manage Subscriptions</h2>
+        <ul id="subscriptionList"></ul>
+        <form id="addSubscriptionForm">
+            <input type="hidden" id="userId" name="userId">
+            <select id="subscriptionId" name="subscriptionId">
+                <?php foreach ($allSubscriptions as $subscription): ?>
+                    <option value="<?= $subscription['id'] ?>"><?= htmlspecialchars($subscription['name']) ?></option>
+                <?php endforeach; ?>
+            </select>
+            <button type="submit" class="button add">Add Subscription</button>
+            <button type="button" id="modifySubscriptionButton" class="button modify">Modify Subscription</button>
+        </form>
+    </div>
+</div>
+
+<script>const BASE_URL = "<?= BASE_URL ?>";</script>
+<script src="<?= BASE_URL ?>/public/js/subscription.js"></script>

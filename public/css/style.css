@@ -1,25 +1,21 @@
-/* Reset général */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Styles de base pour le HTML et le body */
 html, body {
     height: 100%;
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
 }
 
-/* Conteneur principal */
 .main-container {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-/* Contenu de la page d'accueil sans sidebar */
 .main-container.no-sidebar .content.home-page {
     flex: 1;
     display: flex;
@@ -27,9 +23,8 @@ html, body {
     justify-content: center;
 }
 
-/* Contenu avec sidebar */
 .main-container.with-sidebar .content {
-    margin-left: 250px; /* Ajuste en fonction de la largeur de la sidebar */
+    margin-left: 250px;
     flex: 1;
     padding: 20px;
     display: flex;
@@ -37,7 +32,6 @@ html, body {
     align-items: center;
 }
 
-/* Styles pour la page d'accueil */
 .home-container {
     text-align: center;
     max-width: 800px;
@@ -61,7 +55,7 @@ html, body {
     display: flex;
     justify-content: center;
     gap: 20px;
-    flex-wrap: wrap; /* Permet aux boutons de passer à la ligne sur les petits écrans */
+    flex-wrap: wrap;
 }
 
 .home-button {
@@ -87,7 +81,6 @@ html, body {
     transform: scale(1.05);
 }
 
-/* Sidebar */
 .sidebar {
     width: 250px;
     background-color: #1C1C1C;
@@ -140,7 +133,6 @@ html, body {
     font-size: 16px;
 }
 
-/* Formulaire de recherche */
 .search-form {
     max-width: 800px;
     width: 100%;
@@ -196,7 +188,6 @@ html, body {
     color: #1C1C1C;
 }
 
-/* Styles pour les tables */
 table {
     width: 100%;
     max-width: 1400px;
@@ -222,7 +213,6 @@ tr:hover {
     background-color: #f5f5f5;
 }
 
-/* Styles pour les boutons */
 .button {
     padding: 8px 16px;
     font-size: 14px;
@@ -268,7 +258,6 @@ tr:hover {
     background-color: #5a6268;
 }
 
-/* Pagination */
 .pagination-container {
     display: flex;
     justify-content: center;
@@ -313,4 +302,100 @@ select[name="limit"] {
     color: #2C3E50;
     font-size: 16px;
     transition: all 0.3s ease;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-modal:hover {
+    color: #000;
+}
+
+.modal-content h2 {
+    font-size: 1.5rem;
+    color: #2C3E50;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#subscriptionList {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+#subscriptionList li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    font-size: 1rem;
+    color: #2C3E50;
+}
+
+#subscriptionList li:last-child {
+    border-bottom: none;
+}
+
+.button.deletesubs {
+    background-color: #dc3545;
+    margin-left: 12px;
+}
+
+#addSubscriptionForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#addSubscriptionForm select,
+#addSubscriptionForm button {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+}
+
+#addSubscriptionForm select {
+    background-color: #fff;
+}
+
+#addSubscriptionForm button {
+    background-color: #2C3E50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#addSubscriptionForm button:hover {
+    background-color: #1C1C1C;
 }

@@ -75,7 +75,6 @@
         </tbody>
     </table>
 
-    <!-- Pagination -->
     <div class="pagination-container">
         <?php require ROOT . '/views/components/pagination.php'; ?>
         <form method="get">

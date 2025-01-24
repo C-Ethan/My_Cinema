@@ -1,10 +1,12 @@
 <?php
 class MemberController {
     private $memberModel;
+    private $subscriptionModel;
     private $allowedLimits = [10, 25, 50, 100];
 
     public function __construct() {
         $this->memberModel = new Member();
+        $this->subscriptionModel = new Subscription();
     }
 
     public function index() {
@@ -19,6 +21,8 @@ class MemberController {
         $totalMembers = $this->memberModel->getTotalMembers($lastnameSearch, $firstnameSearch);
         $totalPages = ceil($totalMembers / $limit);
 
+        $allSubscriptions = $this->subscriptionModel->getAllSubscription();
+
         extract([
             'members' => $members,
             'lastnameSearch' => $lastnameSearch,
@@ -26,7 +30,8 @@ class MemberController {
             'currentPage' => $page,
             'totalPages' => $totalPages,
             'limit' => $limit,
-            'allowedLimits' => $this->allowedLimits
+            'allowedLimits' => $this->allowedLimits,
+            'allSubscriptions' => $allSubscriptions
         ]);
 
         require_once ROOT . '/views/member.view.php';

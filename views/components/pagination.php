@@ -1,8 +1,7 @@
 <div class="pagination">
     <?php
-    // Construire l'URL de base pour la pagination
     $queryParams = $_GET;
-    unset($queryParams['page']); // Retirer le paramètre page existant
+    unset($queryParams['page']);
     $baseUrl = '?' . http_build_query($queryParams) . '&page=';
     ?>
 

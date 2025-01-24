@@ -11,11 +11,11 @@ require ROOT . '/views/layouts/header.php';
 
             <div class="home-buttons">
                 <a href="./movie.php" class="home-button">
-                    <span>See the films</span>
+                    <span>Watch movies</span>
                 </a>
 
                 <a href="./member.php" class="home-button">
-                    <span>See the members</span>
+                    <span>View members</span>
                 </a>
             </div>
         </div>
