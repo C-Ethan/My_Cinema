@@ -1,7 +1,3 @@
-<?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);?>
 <form method="GET" class="search-form">
     <div class="search-bar">
         <input
@@ -74,32 +70,4 @@ error_reporting(E_ALL);?>
     <p style="text-align: center">No members found in database.</p>
 <?php endif; ?>
 
-<div id="subscriptionModal" class="modal">
-    <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <h2>Manage Subscriptions</h2>
-        <ul id="subscriptionList"></ul>
-        <form id="addSubscriptionForm">
-            <input type="hidden" id="userId" name="userId">
-            <select id="subscriptionId" name="subscriptionId">
-                <?php foreach ($allSubscriptions as $subscription): ?>
-                    <option value="<?= $subscription['id'] ?>"><?= htmlspecialchars($subscription['name']) ?></option>
-                <?php endforeach; ?>
-            </select>
-            <button type="submit" class="button add">Add Subscription</button>
-            <button type="button" id="modifySubscriptionButton" class="button modify">Modify Subscription</button>
-        </form>
-    </div>
-</div>
-
-<div id="historyModal" class="modal">
-    <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <h2>Movie History</h2>
-        <ul id="historyList"></ul>
-    </div>
-</div>
-
-<script>const BASE_URL = "<?= BASE_URL ?>";</script>
-<script src="<?= BASE_URL ?>/public/js/subscription.js"></script>
-<script src="<?= BASE_URL ?>/public/js/history.js"></script>    
+<?php require __DIR__ . '/components/modals.php'; ?>  

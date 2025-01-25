@@ -19,50 +19,64 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Function to load a user's subscriptions
   function loadSubscriptions(userId) {
-      fetch(`${BASE_URL}/api/subscriptions/getSubscriptions.php?userId=${userId}`)
-          .then(response => response.json())
-          .then(data => {
-              const subscriptionList = document.getElementById('subscriptionList');
-              subscriptionList.innerHTML = ''; // Clear the current list
+    fetch(`${BASE_URL}/api/subscriptions/getSubscriptions.php?userId=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            const subscriptionList = document.getElementById('subscriptionList');
+            const subscriptionSelect = document.getElementById('subscriptionId');
+            subscriptionList.innerHTML = ''; // Clear the current list
+            subscriptionSelect.innerHTML = ''; // Clear the current options
 
-              if (data.error) {
-                  showAlert(data.error, false);
-                  return;
-              }
+            if (data.error) {
+                showAlert(data.error, false);
+                return;
+            }
 
-              // Store the current subscription ID (if it exists)
-              if (data.length > 0) {
-                  currentSubscriptionId = data[0].id; // Assume a user has only one subscription
-                  if (addSubscriptionButton) addSubscriptionButton.style.display = 'none';
-                  if (modifySubscriptionButton) modifySubscriptionButton.style.display = 'inline-block';
-              } else {
-                  currentSubscriptionId = null;
-                  if (addSubscriptionButton) addSubscriptionButton.style.display = 'inline-block';
-                  if (modifySubscriptionButton) modifySubscriptionButton.style.display = 'none';
-              }
+            // Store the current subscription ID (if it exists)
+            if (data.userSubscriptions && data.userSubscriptions.length > 0) {
+                currentSubscriptionId = data.userSubscriptions[0].id; // Assume a user has only one subscription
+                if (addSubscriptionButton) addSubscriptionButton.style.display = 'none';
+                if (modifySubscriptionButton) modifySubscriptionButton.style.display = 'inline-block';
+            } else {
+                currentSubscriptionId = null;
+                if (addSubscriptionButton) addSubscriptionButton.style.display = 'inline-block';
+                if (modifySubscriptionButton) modifySubscriptionButton.style.display = 'none';
+            }
 
-              // Display subscriptions in the list
-              data.forEach(subscription => {
-                  const listItem = document.createElement('li');
-                  listItem.textContent = subscription.name;
+            // Display user's subscriptions in the list
+            if (data.userSubscriptions && data.userSubscriptions.length > 0) {
+                data.userSubscriptions.forEach(subscription => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = subscription.name;
 
-                  // Add a button to delete the subscription
-                  const deleteButton = document.createElement('button');
-                  deleteButton.textContent = 'Delete';
-                  deleteButton.classList.add('button', 'deletesubs');
-                  deleteButton.addEventListener('click', function () {
-                      deleteSubscription(userId, subscription.id);
-                  });
+                    // Add a button to delete the subscription
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.classList.add('button', 'deletesubs');
+                    deleteButton.addEventListener('click', function () {
+                        deleteSubscription(userId, subscription.id);
+                    });
 
-                  listItem.appendChild(deleteButton);
-                  subscriptionList.appendChild(listItem);
-              });
-          })
-          .catch(error => {
-              console.error('Error loading subscriptions:', error);
-              showAlert('Error loading subscriptions', false);
-          });
-  }
+                    listItem.appendChild(deleteButton);
+                    subscriptionList.appendChild(listItem);
+                });
+            }
+
+            // Display available subscriptions in the select menu
+            if (data.allSubscriptions && data.allSubscriptions.length > 0) {
+                data.allSubscriptions.forEach(subscription => {
+                    const option = document.createElement('option');
+                    option.value = subscription.id;
+                    option.textContent = subscription.name;
+                    subscriptionSelect.appendChild(option);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error loading subscriptions:', error);
+            showAlert('Error loading subscriptions', false);
+        });
+}
 
   // Function to add a subscription
   function addSubscription(userId, subscriptionId) {

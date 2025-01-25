@@ -39,7 +39,6 @@
     </div>
 </form>
 
-<!-- Affichage des films -->
 <?php if (!empty($movies)): ?>
     <table>
         <thead>
@@ -67,8 +66,7 @@
                         <?php endif; ?>
                     </td>
                     <td>
-                        <a href="#" class="button add">Add sessions</a>
-                        <a href="#" class="button delete">Delete sessions</a>
+                        <a href="#" class="button session">Sessions</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
