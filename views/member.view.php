@@ -1,3 +1,7 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);?>
 <form method="GET" class="search-form">
     <div class="search-bar">
         <input
@@ -41,7 +45,7 @@
                     </td>
                     <td>
                         <button class="button subscription" data-user-id="<?= $member['id'] ?>">Subscription</button>
-                        <button class="button history">History</button>
+                        <button class="button history" data-user-id="<?= $member['id'] ?>">History</button>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -88,5 +92,14 @@
     </div>
 </div>
 
+<div id="historyModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Movie History</h2>
+        <ul id="historyList"></ul>
+    </div>
+</div>
+
 <script>const BASE_URL = "<?= BASE_URL ?>";</script>
 <script src="<?= BASE_URL ?>/public/js/subscription.js"></script>
+<script src="<?= BASE_URL ?>/public/js/history.js"></script>    

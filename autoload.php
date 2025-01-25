@@ -9,6 +9,7 @@ require ROOT . '/controllers/Movie.Controller.php';
 
 require ROOT . '/models/Distributor.php';
 require ROOT . '/models/Genre.php';
+require ROOT . '/models/History.php';
 require ROOT . '/models/Member.php';
 require ROOT . '/models/Movie.php';
 require ROOT . '/models/Subscription.php';

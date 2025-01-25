@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Function to load a user's subscriptions
   function loadSubscriptions(userId) {
-      fetch(`${BASE_URL}/getSubscriptions.php?userId=${userId}`)
+      fetch(`${BASE_URL}/api/subscriptions/getSubscriptions.php?userId=${userId}`)
           .then(response => response.json())
           .then(data => {
               const subscriptionList = document.getElementById('subscriptionList');
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Function to add a subscription
   function addSubscription(userId, subscriptionId) {
-      fetch(`${BASE_URL}/addSubscription.php`, {
+      fetch(`${BASE_URL}/api/subscriptions/addSubscription.php`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Function to delete a subscription
   function deleteSubscription(userId, subscriptionId) {
       if (confirm('Are you sure you want to delete this subscription?')) {
-          fetch(`${BASE_URL}/deleteSubscription.php`, {
+          fetch(`${BASE_URL}/api/subscriptions/deleteSubscription.php`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Function to modify a subscription
   function modifySubscription(userId, currentSubscriptionId, newSubscriptionId) {
-      fetch(`${BASE_URL}/modifySubscription.php`, {
+      fetch(`${BASE_URL}/api/subscriptions/modifySubscription.php`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'

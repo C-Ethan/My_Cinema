@@ -17,7 +17,7 @@ class Subscription {
         return $stmt->fetchAll();
     }
 
-    public function getUserSubscriptions($userId) {
+    public function getUserSubscription($userId) {
         $query = "SELECT 
                     subscription.id, 
                     subscription.name 
@@ -34,25 +34,6 @@ class Subscription {
     }
 
     public function addUserSubscription($userId, $subscriptionId) {
-        // Check if subscription already exist
-        $query = "SELECT 
-                    * 
-                  FROM 
-                    membership 
-                  WHERE 
-                    id_user = :userId 
-                  AND 
-                    id_subscription = :subscriptionId";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
-        $stmt->bindValue(':subscriptionId', $subscriptionId, PDO::PARAM_INT);
-        $stmt->execute();
-    
-        if ($stmt->rowCount() > 0) {
-            return false; // Subscription already exist
-        }
-    
-        // Add subscription
         $query = "INSERT INTO 
                     membership (id_user, id_subscription) 
                   VALUES 
@@ -75,4 +56,20 @@ class Subscription {
         $stmt->bindValue(':subscriptionId', $subscriptionId, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+    public function modifySubscription($userId, $currentSubscriptionId, $newSubscriptionId) {
+      if ($currentSubscriptionId === $newSubscriptionId) {
+          return ['success' => false, 'message' => 'You already have this subscription.'];
+      }
+  
+      if ($this->removeUserSubscription($userId, $currentSubscriptionId)) {
+          if ($this->addUserSubscription($userId, $newSubscriptionId)) {
+              return ['success' => true, 'message' => 'Subscription modified successfully.'];
+          } else {
+              return ['success' => false, 'message' => 'Failed to add new subscription.'];
+          }
+      } else {
+          return ['success' => false, 'message' => 'Failed to delete current subscription.'];
+      }
+  }
 }

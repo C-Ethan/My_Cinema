@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/autoload.php';
+require __DIR__ . '/../../autoload.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);

@@ -1,10 +1,10 @@
 <?php
-require __DIR__ . '/autoload.php';
+require __DIR__ . '/../../autoload.php';
 
 if (isset($_GET['userId'])) {
     $userId = intval($_GET['userId']);
     $subscriptionModel = new Subscription();
-    $subscriptions = $subscriptionModel->getUserSubscriptions($userId);
+    $subscriptions = $subscriptionModel->getUserSubscription($userId);
 
     header('Content-Type: application/json');
     echo json_encode($subscriptions);
