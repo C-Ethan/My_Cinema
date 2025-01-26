@@ -18,25 +18,25 @@
         <span class="close-modal">&times;</span>
         <h2>Movie History</h2>
         <ul id="historyList"></ul>
-        <button id="addHistoryButton" class="button add">Ajouter un film</button>
+        <button id="addHistoryButton" class="button add">Add a movie</button>
     </div>
 </div>
 
 <div id="addHistoryModal" class="modal">
     <div class="modal-content">
         <span class="close-modal">&times;</span>
-        <h2>Ajouter un film à l'historique</h2>
+        <h2>Add a movie to history</h2>
         <form id="addHistoryForm">
             <input type="hidden" id="userId" name="userId">
 
             <div class="form-group">
-                <label for="movieId">Film :</label>
+                <label for="movieId">Movie :</label>
                 <select id="movieId" name="movieId" class="form-control">
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="roomId">Salle :</label>
+                <label for="roomId">Room :</label>
                 <select id="roomId" name="roomId" class="form-control">
                 </select>
             </div>
@@ -46,7 +46,7 @@
                 <input type="datetime-local" id="movieDate" name="movieDate" class="form-control" required min="1900-01-01T00:00" max="2100-12-31T23:59">
             </div>
 
-            <button type="submit" class="button add">Ajouter à l'historique</button>
+            <button type="submit" class="button add">Add to history</button>
         </form>
     </div>
 </div>

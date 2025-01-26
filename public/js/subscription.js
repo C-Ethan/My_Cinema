@@ -8,24 +8,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let currentSubscriptionId = null; // Variable to store the current subscription ID
 
-  // Function to display a success or error alert
-  function showAlert(message, isSuccess = true) {
-      if (isSuccess) {
-          alert(message);
-      } else {
-          alert('Error: ' + message);
-      }
-  }
-
-  // Function to load a user's subscriptions
   function loadSubscriptions(userId) {
     fetch(`${BASE_URL}/api/subscriptions/getSubscriptions.php?userId=${userId}`)
         .then(response => response.json())
         .then(data => {
             const subscriptionList = document.getElementById('subscriptionList');
             const subscriptionSelect = document.getElementById('subscriptionId');
-            subscriptionList.innerHTML = ''; // Clear the current list
-            subscriptionSelect.innerHTML = ''; // Clear the current options
+            subscriptionList.innerHTML = '';
+            subscriptionSelect.innerHTML = '';
 
             if (data.error) {
                 showAlert(data.error, false);
@@ -34,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Store the current subscription ID (if it exists)
             if (data.userSubscriptions && data.userSubscriptions.length > 0) {
-                currentSubscriptionId = data.userSubscriptions[0].id; // Assume a user has only one subscription
+                currentSubscriptionId = data.userSubscriptions[0].id;
                 if (addSubscriptionButton) addSubscriptionButton.style.display = 'none';
                 if (modifySubscriptionButton) modifySubscriptionButton.style.display = 'inline-block';
             } else {
@@ -151,8 +141,8 @@ document.addEventListener('DOMContentLoaded', function () {
           const userId = this.getAttribute('data-user-id');
           if (modal) {
               modal.style.display = 'block';
-              document.getElementById('userId').value = userId; // Set the user ID in the form
-              loadSubscriptions(userId); // Load the user's subscriptions
+              document.getElementById('userId').value = userId;
+              loadSubscriptions(userId);
           }
       });
   });
