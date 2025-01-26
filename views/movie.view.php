@@ -66,7 +66,7 @@
                         <?php endif; ?>
                     </td>
                     <td>
-                        <a href="#" class="button session">Sessions</a>
+                        <a href="#" class="button session" data-movie-id="<?= htmlspecialchars($movie['id']) ?>">Sessions</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -94,3 +94,6 @@
 <?php else: ?>
     <p style="text-align: center">No movies found in database.</p>
 <?php endif; ?>
+
+<?php require __DIR__ . '/components/modals.php'; ?>  
+<script src="<?= BASE_URL ?>/public/js/movie.js"></script>

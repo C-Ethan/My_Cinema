@@ -17,6 +17,10 @@ require ROOT . '/views/layouts/header.php';
                 <a href="./member.php" class="home-button">
                     <span>View members</span>
                 </a>
+
+                <a href="./session.php" class="home-button">
+                    <span>View sessions</span>
+                </a>
             </div>
         </div>
     </div>

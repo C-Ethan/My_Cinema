@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const addHistoryButton = document.getElementById('addHistoryButton');
     const historyList = document.getElementById('historyList');
     const addHistoryForm = document.getElementById('addHistoryForm');
+    const historyRoomSelect = document.getElementById('historyRoomId');
 
     historyButtons.forEach(button => {
         button.addEventListener('click', function () {
@@ -107,21 +108,22 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch(`${BASE_URL}/api/rooms/getRooms.php`)
             .then(response => response.json())
             .then(data => {
-                const roomSelect = document.getElementById('roomId');
-                roomSelect.innerHTML = '';
+                if (historyRoomSelect) {
+                    historyRoomSelect.innerHTML = '';
 
-                if (data.error) {
-                    console.error(data.error);
-                    return;
-                }
+                    if (data.error) {
+                        console.error(data.error);
+                        return;
+                    }
 
-                if (data.length > 0) {
-                    data.forEach(room => {
-                        const option = document.createElement('option');
-                        option.value = room.id;
-                        option.textContent = room.name;
-                        roomSelect.appendChild(option);
-                    });
+                    if (data.length > 0) {
+                        data.forEach(room => {
+                            const option = document.createElement('option');
+                            option.value = room.id;
+                            option.textContent = room.name;
+                            historyRoomSelect.appendChild(option);
+                        });
+                    }
                 }
             })
             .catch(error => {
@@ -135,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const userId = document.getElementById('userId').value;
             const movieId = document.getElementById('movieId').value;
-            const roomId = document.getElementById('roomId').value;
+            const roomId = document.getElementById('historyRoomId').value;
             const movieDate = document.getElementById('movieDate').value;
 
             fetch(`${BASE_URL}/api/history/addHistory.php`, {
@@ -153,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         historyModal.style.display = 'block';
                         loadUserHistory(userId);
                     } else {
-                        alert('Erreur : ' + (data.message || 'Failed to add movie to history.'));
+                        alert('Error: ' + (data.message || 'Failed to add movie to history.'));
                     }
                 })
                 .catch(error => {

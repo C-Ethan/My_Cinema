@@ -1,20 +1,17 @@
 <?php
-class MovieController
-{
+class MovieController {
     private $movieModel;
     private $genreModel;
     private $distribModel;
     private $allowedLimits = [10, 25, 50, 100];
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->movieModel = new Movie();
         $this->genreModel = new Genre();
         $this->distribModel = new Distributor();
     }
 
-    public function index()
-    {
+    public function index() {
         $movieSearch = isset($_GET['movieSearch']) ? trim($_GET['movieSearch']) : '';
         $directorSearch = isset($_GET['directorSearch']) ? trim($_GET['directorSearch']) : '';
         $selectedGenre = isset($_GET['genre']) ? intval($_GET['genre']) : null;
@@ -42,5 +39,16 @@ class MovieController
         ]);
 
         require ROOT . '/views/movie.view.php';
+    }
+
+    public function sessions() {
+        $movieModel = new Movie();
+        $sessions = $movieModel->getMovieSessions();
+
+        extract([
+            'sessions' => $sessions
+        ]);
+
+        require ROOT . '/views/session.view.php';
     }
 }

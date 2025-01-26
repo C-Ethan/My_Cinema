@@ -547,6 +547,94 @@ select[name="limit"] {
     transform: scale(1);
 }
 
+#sessionModal .modal-content {
+    max-width: 500px;
+    margin: 10% auto;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    animation: slideIn 0.3s ease-in-out;
+}
+
+#sessionModal h2 {
+    font-size: 1.8rem;
+    color: #2C3E50;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#sessionModal .form-group {
+    margin-bottom: 20px;
+}
+
+#sessionModal label {
+    display: block;
+    font-size: 1rem;
+    color: #2C3E50;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+#sessionModal .form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+#sessionModal .form-control:focus {
+    border-color: #2C3E50;
+}
+
+#sessionModal .button.add {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#sessionModal .button.add:hover {
+    background-color: #218838;
+    transform: scale(1.02);
+}
+
+#sessionModal .button.add:active {
+    background-color: #1e7e34;
+    transform: scale(1);
+}
+
+.button.deletesession {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button.deletesession:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+}
+
+.button.deletesession:active {
+    background-color: #bd2130;
+    transform: scale(1);
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;

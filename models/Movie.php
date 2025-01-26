@@ -133,4 +133,24 @@ class Movie {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getMovieSessions() {
+      $query = "SELECT
+                  movie_schedule.id,
+                  movie.title AS movie_title,
+                  room.name AS room_name,
+                  movie_schedule.date_begin AS session_date
+                FROM 
+                  movie_schedule
+                JOIN 
+                  movie ON movie_schedule.id_movie = movie.id
+                JOIN 
+                  room ON movie_schedule.id_room = room.id
+                ORDER BY 
+                  movie_schedule.id DESC";
+      
+      $stmt = $this->db->prepare($query);
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
 }

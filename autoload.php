@@ -14,4 +14,3 @@ require ROOT . '/models/Member.php';
 require ROOT . '/models/Movie.php';
 require ROOT . '/models/Room.php';
 require ROOT . '/models/Subscription.php';
-?>
