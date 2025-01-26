@@ -1,18 +1,31 @@
 document.addEventListener('DOMContentLoaded', function () {
     const historyButtons = document.querySelectorAll('.button.history');
     const historyModal = document.getElementById('historyModal');
+    const addHistoryModal = document.getElementById('addHistoryModal');
     const closeHistoryModal = historyModal.querySelector('.close-modal');
+    const closeAddHistoryModal = addHistoryModal.querySelector('.close-modal');
+    const addHistoryButton = document.getElementById('addHistoryButton');
     const historyList = document.getElementById('historyList');
+    const addHistoryForm = document.getElementById('addHistoryForm');
 
     historyButtons.forEach(button => {
         button.addEventListener('click', function () {
             const userId = this.getAttribute('data-user-id');
             if (historyModal) {
                 historyModal.style.display = 'block';
+                document.getElementById('userId').value = userId;
                 loadUserHistory(userId);
             }
         });
     });
+
+    if (addHistoryButton) {
+        addHistoryButton.addEventListener('click', function () {
+            historyModal.style.display = 'none';
+            addHistoryModal.style.display = 'block';
+            loadMoviesAndRooms();
+        });
+    }
 
     if (closeHistoryModal) {
         closeHistoryModal.addEventListener('click', function () {
@@ -20,9 +33,18 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    if (closeAddHistoryModal) {
+        closeAddHistoryModal.addEventListener('click', function () {
+            addHistoryModal.style.display = 'none';
+        });
+    }
+
     window.addEventListener('click', function (event) {
         if (event.target === historyModal) {
             historyModal.style.display = 'none';
+        }
+        if (event.target === addHistoryModal) {
+            addHistoryModal.style.display = 'none';
         }
     });
 
@@ -55,5 +77,89 @@ document.addEventListener('DOMContentLoaded', function () {
                 listItem.textContent = 'Error loading movie history.';
                 historyList.appendChild(listItem);
             });
+    }
+
+    function loadMoviesAndRooms() {
+        fetch(`${BASE_URL}/api/movies/getMovies.php`)
+            .then(response => response.json())
+            .then(data => {
+                const movieSelect = document.getElementById('movieId');
+                movieSelect.innerHTML = '';
+
+                if (data.error) {
+                    console.error(data.error);
+                    return;
+                }
+
+                if (data.length > 0) {
+                    data.forEach(movie => {
+                        const option = document.createElement('option');
+                        option.value = movie.id;
+                        option.textContent = movie.title;
+                        movieSelect.appendChild(option);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error loading movies:', error);
+            });
+
+        fetch(`${BASE_URL}/api/rooms/getRooms.php`)
+            .then(response => response.json())
+            .then(data => {
+                const roomSelect = document.getElementById('roomId');
+                roomSelect.innerHTML = '';
+
+                if (data.error) {
+                    console.error(data.error);
+                    return;
+                }
+
+                if (data.length > 0) {
+                    data.forEach(room => {
+                        const option = document.createElement('option');
+                        option.value = room.id;
+                        option.textContent = room.name;
+                        roomSelect.appendChild(option);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error loading rooms:', error);
+            });
+    }
+
+    if (addHistoryForm) {
+        addHistoryForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const userId = document.getElementById('userId').value;
+            const movieId = document.getElementById('movieId').value;
+            const roomId = document.getElementById('roomId').value;
+            const movieDate = document.getElementById('movieDate').value;
+
+            fetch(`${BASE_URL}/api/history/addHistory.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId, movieId, roomId, movieDate })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Movie added to history successfully!');
+                        addHistoryModal.style.display = 'none';
+                        historyModal.style.display = 'block';
+                        loadUserHistory(userId);
+                    } else {
+                        alert('Erreur : ' + (data.message || 'Failed to add movie to history.'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error adding movie to history:', error);
+                    alert('Error adding movie to history.');
+                });
+        });
     }
 });

@@ -43,13 +43,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (modifySubscriptionButton) modifySubscriptionButton.style.display = 'none';
             }
 
-            // Display user's subscriptions in the list
             if (data.userSubscriptions && data.userSubscriptions.length > 0) {
                 data.userSubscriptions.forEach(subscription => {
                     const listItem = document.createElement('li');
                     listItem.textContent = subscription.name;
 
-                    // Add a button to delete the subscription
                     const deleteButton = document.createElement('button');
                     deleteButton.textContent = 'Delete';
                     deleteButton.classList.add('button', 'deletesubs');
@@ -62,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
-            // Display available subscriptions in the select menu
             if (data.allSubscriptions && data.allSubscriptions.length > 0) {
                 data.allSubscriptions.forEach(subscription => {
                     const option = document.createElement('option');
@@ -78,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 }
 
-  // Function to add a subscription
   function addSubscription(userId, subscriptionId) {
       fetch(`${BASE_URL}/api/subscriptions/addSubscription.php`, {
           method: 'POST',
@@ -91,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
           .then(data => {
               if (data.success) {
                   showAlert('Subscription added successfully!');
-                  loadSubscriptions(userId); // Reload the subscription list
+                  loadSubscriptions(userId);
               } else {
                   showAlert(data.message || 'Failed to add subscription', false);
               }
@@ -102,7 +98,6 @@ document.addEventListener('DOMContentLoaded', function () {
           });
   }
 
-  // Function to delete a subscription
   function deleteSubscription(userId, subscriptionId) {
       if (confirm('Are you sure you want to delete this subscription?')) {
           fetch(`${BASE_URL}/api/subscriptions/deleteSubscription.php`, {
@@ -116,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
               .then(data => {
                   if (data.success) {
                       showAlert('Subscription deleted successfully!');
-                      loadSubscriptions(userId); // Reload the subscription list
+                      loadSubscriptions(userId);
                   } else {
                       showAlert(data.message || 'Failed to delete subscription', false);
                   }
@@ -128,7 +123,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
   }
 
-  // Function to modify a subscription
   function modifySubscription(userId, currentSubscriptionId, newSubscriptionId) {
       fetch(`${BASE_URL}/api/subscriptions/modifySubscription.php`, {
           method: 'POST',
@@ -141,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
           .then(data => {
               if (data.success) {
                   showAlert('Subscription modified successfully!');
-                  loadSubscriptions(userId); // Reload the subscription list
+                  loadSubscriptions(userId);
               } else {
                   showAlert(data.message || 'Failed to modify subscription', false);
               }
@@ -152,7 +146,6 @@ document.addEventListener('DOMContentLoaded', function () {
           });
   }
 
-  // Open the modal and load subscriptions
   modalTriggers.forEach(button => {
       button.addEventListener('click', function () {
           const userId = this.getAttribute('data-user-id');
@@ -164,40 +157,36 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   });
 
-  // Close the modal
   if (closeBtn) {
       closeBtn.addEventListener('click', function () {
           modal.style.display = 'none';
       });
   }
 
-  // Close the modal by clicking outside
   window.addEventListener('click', function (event) {
       if (event.target === modal) {
           modal.style.display = 'none';
       }
   });
 
-  // Event handler for the add subscription form
   if (addSubscriptionForm) {
       addSubscriptionForm.addEventListener('submit', function (event) {
-          event.preventDefault(); // Prevent page reload
+          event.preventDefault();
 
           const userId = document.getElementById('userId').value;
           const subscriptionId = document.getElementById('subscriptionId').value;
 
-          addSubscription(userId, subscriptionId); // Call the function to add a subscription
+          addSubscription(userId, subscriptionId);
       });
   }
 
-  // Event handler for the modify subscription button
   if (modifySubscriptionButton) {
       modifySubscriptionButton.addEventListener('click', function () {
           const userId = document.getElementById('userId').value;
           const newSubscriptionId = document.getElementById('subscriptionId').value;
 
           if (currentSubscriptionId) {
-              modifySubscription(userId, currentSubscriptionId, newSubscriptionId); // Call the function to modify a subscription
+              modifySubscription(userId, currentSubscriptionId, newSubscriptionId);
           } else {
               showAlert('No current subscription to modify.', false);
           }

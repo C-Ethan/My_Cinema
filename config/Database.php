@@ -21,7 +21,7 @@ class Database {
                     ]
                 );
             } catch (PDOException $e) {
-                die("La connexion a échoué : " . $e->getMessage());
+                die("Connection failed : " . $e->getMessage());
             }
         }
         return self::$instance;

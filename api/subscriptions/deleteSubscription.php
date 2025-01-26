@@ -7,6 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subscriptionId = intval($data['subscriptionId']);
 
     $subscriptionModel = new Subscription();
+    
     if ($subscriptionModel->removeUserSubscription($userId, $subscriptionId)) {
         echo json_encode(['success' => true]);
     } else {

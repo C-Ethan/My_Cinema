@@ -111,4 +111,26 @@ class Movie {
         $stmt->execute();
         return $stmt->fetch()['total'];
     }
+
+    public function getAllMovies() {
+        $query = "SELECT 
+                    movie.id,
+                    movie.title,
+                    movie.director,
+                    genre.name AS genre,
+                    distributor.name AS distributor_name
+                  FROM 
+                    movie
+                  JOIN
+                    movie_genre ON movie.id = movie_genre.id_movie
+                  JOIN 
+                    genre ON movie_genre.id_genre = genre.id
+                  JOIN
+                    distributor ON movie.id_distributor = distributor.id
+                  ORDER BY movie.title ASC";
+    
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

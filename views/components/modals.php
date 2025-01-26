@@ -1,4 +1,3 @@
-<!-- Modal for subscription management -->
 <div id="subscriptionModal" class="modal">
     <div class="modal-content">
         <span class="close-modal">&times;</span>
@@ -14,39 +13,44 @@
     </div>
 </div>
 
-<!-- Modal for movie history -->
 <div id="historyModal" class="modal">
     <div class="modal-content">
         <span class="close-modal">&times;</span>
         <h2>Movie History</h2>
         <ul id="historyList"></ul>
+        <button id="addHistoryButton" class="button add">Ajouter un film</button>
     </div>
 </div>
 
-<!-- Modal to add a movie to history -->
 <div id="addHistoryModal" class="modal">
     <div class="modal-content">
         <span class="close-modal">&times;</span>
         <h2>Ajouter un film à l'historique</h2>
         <form id="addHistoryForm">
-            <label for="movieId">Film :</label>
-            <select id="movieId" name="movieId">
-            </select>
+            <input type="hidden" id="userId" name="userId">
 
-            <label for="roomId">Salle :</label>
-            <select id="roomId" name="roomId">
-            </select>
+            <div class="form-group">
+                <label for="movieId">Film :</label>
+                <select id="movieId" name="movieId" class="form-control">
+                </select>
+            </div>
 
-            <label for="movieDate">Date :</label>
-            <input type="datetime-local" id="movieDate" name="movieDate" required>
+            <div class="form-group">
+                <label for="roomId">Salle :</label>
+                <select id="roomId" name="roomId" class="form-control">
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="movieDate">Date :</label>
+                <input type="datetime-local" id="movieDate" name="movieDate" class="form-control" required min="1900-01-01T00:00" max="2100-12-31T23:59">
+            </div>
 
             <button type="submit" class="button add">Ajouter à l'historique</button>
         </form>
     </div>
 </div>
 
-<script>
-    const BASE_URL = "<?= BASE_URL ?>";
-</script>
+<script>const BASE_URL = "<?= BASE_URL ?>";</script>
 <script src="<?= BASE_URL ?>/public/js/subscription.js"></script>
 <script src="<?= BASE_URL ?>/public/js/history.js"></script>
